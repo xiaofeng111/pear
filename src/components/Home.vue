@@ -9,8 +9,7 @@
     </header>
     <div class="home_body">
       <div class="aside_nav">
-        <router-link to="/news">新闻</router-link>
-        <router-link to="/login/:login">登录</router-link>
+        <router-link :to="{path:'news'}" append>新闻</router-link>
       </div>
       <div class="nav_detail">
         <router-view></router-view>

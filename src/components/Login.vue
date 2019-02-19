@@ -97,9 +97,9 @@ export default {
   name: "Login",
   data() {
     return {
-      api: "http://192.168.0.103:9001/api",
-      api2: "http://192.168.0.103:9001/api/login",
-      api3: "http://192.168.0.103:9001/api/register",
+      api: "http://192.168.0.100:8080/BEAR-MANAGER/api",
+      api2: "http://192.168.0.100:8080/BEAR-MANAGER/api/login",
+      api3: "http://192.168.0.100:8080/BEAR-MANAGER/api/register",
       userName: "",
       password: "",
       password2: "",
@@ -146,9 +146,50 @@ export default {
       let config = {
         "Content-Type": "multipart/form-data"
       };
-      this.$http.post(this.api + "/login", formData, config).then(res => {
-        console.log(res);
-      });
+      try {
+        this.$http.post(this.api + "/login", formData, config).then(res => {
+          console.log("res:", res);
+          if (res.status === 200) {
+            if (res.body.success && !res.body.code) {
+              sessionStorage.setItem("accessToken", res.body.data.userId);
+              sessionStorage.setItem(
+                "userInfo",
+                JSON.stringify({
+                  userName: res.body.data.userName,
+                  userId: res.body.data.userId
+                })
+              );
+              if (res.body.data.usertype === "2") {
+                this.$router.push("/admin");
+              } else {
+                this.$router.push("/home");
+              }
+            }
+            /**
+           * error: "Not Found"
+message: "No message available"
+path: "/BEAR-MANAGER/apii/login"
+status: 404
+timestamp: 1550584748649
+           */
+            /**
+           * email: "qqqq@qq.com"
+enabled: null
+page: 1
+password: "12345678"
+qq: null
+rows: 10
+tel: null
+userId: "bf8a52eb-b046-4730-bf1d-c3319f4265d6"
+userName: "pear"
+usertype: "1"
+           */
+          }
+          // this.$route
+        });
+      } catch (e) {
+        console.log("e:", e);
+      }
     }
   }
 };
