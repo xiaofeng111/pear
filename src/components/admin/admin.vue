@@ -8,28 +8,81 @@
         </ul>
       </div>
       <div class="right_container">
-        <h5 class="lesson_title">{{title}}</h5>
-        <div class="lesson_table">
-          <table>
+        <div>
+          <h5 class="lesson_title">{{title}}</h5>
+          <button @click="addCourse">新增课程</button>
+        </div>
+
+        <div class="lesson_table" v-if="isShowCourseList">
+          <table border="1px solid red" cellpadding="0" cellspacing="0">
             <thead>
               <tr>
                 <td>课程排序</td>
                 <td>课程名称</td>
-                <td>课时</td>
+                <td>课程开始时间</td>
+                <td>课程结束时间</td>
                 <td>课程老师</td>
+                <td>选课人数</td>
+                <td>课程时长</td>
+                <td>是否可选</td>
                 <td>操作</td>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(lesson,index) in lessons" :key="lesson.classId">
+              <tr v-for="(lesson,index) in lessons" :key="lesson.courseId">
                 <td>{{index}}</td>
-                <td>{{lesson.className}}</td>
-                <td>{{lesson.time}}</td>
-                <td>{{lesson.teacher}}</td>
-                <td>删除</td>
+                <td>{{lesson.courseName}}</td>
+                <td>{{lesson.courseStartTime}}</td>
+                <td>{{lesson.courseEndTime}}</td>
+                <td>{{lesson.teacherName}}</td>
+                <td>{{lesson.selectNumber?lesson.selectNumber:0}}</td>
+                <td>{{lesson.courseTime}}</td>
+                <td>{{lesson.isActive?"可选":"不可选"}}</td>
+                <td>
+                  <button @click="deleteLesson(lesson.courseId)">删除</button>
+                </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="lesson_table" v-if="!isShowCourseList">
+          <form action>
+            <!-- 
+              courseId: "aaaaaaaaaaaaa2",
+        courseName: "语文2",
+        time: 100,
+        teacherId: "dsadsadasd",
+        teacherName: "小浣熊",
+        courseStartTime: "2019-02-21 22:55:07",
+        courseEndTime: "2019-02-21 22:55:07",
+        createTime: "2019-02-21 22:55:07",
+        selectNumber: null,
+        courseTime: 10,
+        isActive: 0
+            -->
+            <label for="courseName">课程名称</label>
+            <input type="text" v-model="currentCourse.courseName">
+            <label for="courseName">授课老师</label>
+            <input type="text" v-model="currentCourse.teacherName">
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+            
+            <label for="courseName">课程名称</label>
+          </form>
         </div>
       </div>
     </div>
@@ -52,8 +105,7 @@ header {
 }
 .right_container {
   flex: 1;
-  padding-top: 30px;
-  padding-left: 20px;
+  padding: 30px;
 }
 .lesson_table {
   width: 100%;
@@ -67,61 +119,114 @@ header {
 .lesson_table tr {
   height: 30px;
 }
-
 </style>
 
 <script>
+import axios from "axios";
 export default {
-  // classId
+  // courseId
   beforeCreate() {
-    // this.$http.get("").then(res => {
-    //   let resultDatas = [
-    //     {
-    //       classId: "aaaaaaaaaaaaa1",
-    //       className: "语文1",
-    //       time: 100,
-    //       teacher: "小浣熊"
-    //     },
-    //     {
-    //       classId: "aaaaaaaaaaaaa2",
-    //       className: "语文2",
-    //       time: 100,
-    //       teacher: "小浣熊"
-    //     },
-    //     {
-    //       classId: "aaaaaaaaaaaaa3",
-    //       className: "语文3",
-    //       time: 100,
-    //       teacher: "小浣熊"
-    //     }
-    //   ];
+    // this.$store.commit("show", "/course/findAll", "GET");
+    // this.$http.get(this.api + "/api/course/findAll").then(res => {
+    //   console.log(res);
     // });
+  },
+  async mounted() {
+    console.log(5555);
+    let result = await this.httpService("/api/course/findAll", "GET");
+    console.log("result:", result.success);
+    this.lessons = result.data;
+
+    // this.$set(data, "title", "dasdasdadsa");
+    // .then(result=>{
+    //   console.log(result);
+    // })
+  },
+  activated() {
+    console.log(666666);
+    // this.httpService("/api/course/findAll", "GET");
   },
   name: "Admin",
   data() {
     return {
-      api: "http://192.168.0.100:8080",
+      api: "http://192.168.0.104:9001",
       title: "课程列表信息",
+      isShowCourseList: true,
+      currentCourse: {
+        courseId: "aaaaaaaaaaaaa2",
+        courseName: "语文2",
+        time: 100,
+        teacherId: "dsadsadasd",
+        teacherName: "小浣熊",
+        courseStartTime: "2019-02-21 22:55:07",
+        courseEndTime: "2019-02-21 22:55:07",
+        createTime: "2019-02-21 22:55:07",
+        selectNumber: null,
+        courseTime: 10,
+        isActive: 0
+      },
       lessons: [
         {
-          classId: "aaaaaaaaaaaaa1",
-          className: "语文1",
+          courseId: "aaaaaaaaaaaaa1",
+          courseName: "语文1",
           time: 100,
-          teacher: "小浣熊"
+          teacherId: "dsadsadasd",
+          teacherName: "小浣熊",
+          courseStartTime: "2019-02-21 22:55:07",
+          courseEndTime: "2019-02-21 22:55:07",
+          createTime: "2019-02-21 22:55:07",
+          selectNumber: null,
+          courseTime: 10,
+          isActive: 0
         },
         {
-          classId: "aaaaaaaaaaaaa2",
-          className: "语文2",
+          courseId: "aaaaaaaaaaaaa2",
+          courseName: "语文2",
           time: 100,
-          teacher: "小浣熊"
+          teacherId: "dsadsadasd",
+          teacherName: "小浣熊",
+          courseStartTime: "2019-02-21 22:55:07",
+          courseEndTime: "2019-02-21 22:55:07",
+          createTime: "2019-02-21 22:55:07",
+          selectNumber: null,
+          courseTime: 10,
+          isActive: 0
         },
         {
-          classId: "aaaaaaaaaaaaa3",
-          className: "语文3",
+          courseId: "aaaaaaaaaaaaa3",
+          courseName: "语文3",
           time: 100,
-          teacher: "小浣熊"
+          teacherId: "dsadsadasd",
+          teacherName: "小浣熊",
+          courseStartTime: "2019-02-21 22:55:07",
+          courseEndTime: "2019-02-21 22:55:07",
+          createTime: "2019-02-21 22:55:07",
+          selectNumber: null,
+          courseTime: 10,
+          isActive: 0
         }
       ]
+    };
+  },
+  methods: {
+    deleteLesson(lessonId) {
+      this.httpService("/api/course/findAll", "GET");
+      alert(lessonId);
+    },
+    async httpService(url, type) {
+      switch (type) {
+        case "GET":
+          return axios.get(this.api + url).then(res => {
+            if (res.status === 200) {
+              console.log("res", res);
+              return res.data;
+            }
+          });
+          break;
+      }
+    },
+    addCourse() {
+      this.isShowCourseList = false;
     }
   }
 };
