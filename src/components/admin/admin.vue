@@ -45,44 +45,8 @@
             </tbody>
           </table>
         </div>
-        <div class="lesson_table" v-if="!isShowCourseList">
-          <form action>
-            <!-- 
-              courseId: "aaaaaaaaaaaaa2",
-        courseName: "语文2",
-        time: 100,
-        teacherId: "dsadsadasd",
-        teacherName: "小浣熊",
-        courseStartTime: "2019-02-21 22:55:07",
-        courseEndTime: "2019-02-21 22:55:07",
-        createTime: "2019-02-21 22:55:07",
-        selectNumber: null,
-        courseTime: 10,
-        isActive: 0
-            -->
-            <label for="courseName">课程名称</label>
-            <input type="text" v-model="currentCourse.courseName">
-            <label for="courseName">授课老师</label>
-            <input type="text" v-model="currentCourse.teacherName">
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-            
-            <label for="courseName">课程名称</label>
-          </form>
+        <div class="lesson_table222" v-if="!isShowCourseList">
+         <course-mange :currentCourse="currentCourse"></course-mange>
         </div>
       </div>
     </div>
@@ -123,6 +87,7 @@ header {
 
 <script>
 import axios from "axios";
+import CourseMange from './courseMange';
 export default {
   // courseId
   beforeCreate() {
@@ -142,16 +107,20 @@ export default {
     //   console.log(result);
     // })
   },
+  components:{
+    'course-mange':CourseMange,
+
+  },
   activated() {
     console.log(666666);
     // this.httpService("/api/course/findAll", "GET");
   },
-  name: "Admin",
   data() {
     return {
-      api: "http://192.168.0.104:9001",
+      api: "http://192.168.150.1:9001",
       title: "课程列表信息",
       isShowCourseList: true,
+      temCourse:{},
       currentCourse: {
         courseId: "aaaaaaaaaaaaa2",
         courseName: "语文2",
@@ -227,6 +196,7 @@ export default {
     },
     addCourse() {
       this.isShowCourseList = false;
+      this.temCourse = this.currentCourse;
     }
   }
 };
