@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>欢迎来到管理员界面</header>
-    <div class="container">
+    <div class="container_box">
       <div class="left_container">
         <ul>
           <li>课程列表</li>
@@ -10,11 +10,11 @@
       <div class="right_container">
         <div>
           <h5 class="lesson_title">{{title}}</h5>
-          <button @click="addCourse">新增课程</button>
         </div>
 
         <div class="lesson_table" v-if="isShowCourseList">
-          <table border="1px solid red" cellpadding="0" cellspacing="0">
+          <button @click="addCourse">新增课程</button>
+          <table class="table table-bordered table-hover">
             <thead>
               <tr>
                 <td>课程排序</td>
@@ -45,21 +45,25 @@
             </tbody>
           </table>
         </div>
-        <div class="lesson_table222" v-if="!isShowCourseList">
-         <course-mange :currentCourse="currentCourse"></course-mange>
+        <div class="lesson_table" v-if="!isShowCourseList">
+          <course-mange :currentCourse="currentCourse"></course-mange>
         </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.lesson_title {
+  font-size: 28px;
+  font-weight: 800;
+}
 header {
   height: 100px;
   background: rebeccapurple;
   line-height: 100px;
   font-size: 28px;
 }
-.container {
+.container_box {
   display: flex;
 }
 
@@ -87,7 +91,7 @@ header {
 
 <script>
 import axios from "axios";
-import CourseMange from './courseMange';
+import CourseMange from "./courseMange";
 export default {
   // courseId
   beforeCreate() {
@@ -107,9 +111,8 @@ export default {
     //   console.log(result);
     // })
   },
-  components:{
-    'course-mange':CourseMange,
-
+  components: {
+    "course-mange": CourseMange
   },
   activated() {
     console.log(666666);
@@ -120,7 +123,7 @@ export default {
       api: "http://192.168.150.1:9001",
       title: "课程列表信息",
       isShowCourseList: true,
-      temCourse:{},
+      temCourse: {},
       currentCourse: {
         courseId: "aaaaaaaaaaaaa2",
         courseName: "语文2",
