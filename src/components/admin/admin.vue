@@ -8,12 +8,15 @@
         </ul>
       </div>
       <div class="right_container">
-        <div>
+        <div style="position:relative;">
           <h5 class="lesson_title">{{title}}</h5>
+          <button @click="addCourse" class="btn btn-success new-course">新增课程</button>
+          <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+          </button>
         </div>
 
         <div class="lesson_table" v-if="isShowCourseList">
-          <button @click="addCourse">新增课程</button>
           <table class="table table-bordered table-hover">
             <thead>
               <tr>
@@ -62,6 +65,16 @@ header {
   background: rebeccapurple;
   line-height: 100px;
   font-size: 28px;
+}
+
+.new-course {
+  position: absolute;
+  right: 70px;
+  top: 4px;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: #b7aeae;
 }
 .container_box {
   display: flex;
